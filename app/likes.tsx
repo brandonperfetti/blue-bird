@@ -1,6 +1,7 @@
 'use client'
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
 
 export default function Likes({
 	tweet,
@@ -9,6 +10,7 @@ export default function Likes({
 	tweet: TweetWithAuthor
 	addOptimisticTweet: (newTweet: TweetWithAuthor) => void
 }) {
+	const router = useRouter()
 	const handleLikes = async () => {
 		const supabase = createClientComponentClient<Database>()
 		const {
@@ -35,6 +37,7 @@ export default function Likes({
 					.from('likes')
 					.insert({ user_id: user.id, tweet_id: tweet.id })
 			}
+			router.refresh()
 		}
 	}
 	return (
